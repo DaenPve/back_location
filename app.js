@@ -11,24 +11,11 @@ const wss = new WebSocket.Server({ server });
 
 app.use(bodyParser.json());
 
-app.get('/api/status', (req, res) => {
-  res.json({ status: 'Servidor en funcionamiento' });
-});
-
-app.post('/api/endpoint', (req, res) => {
-  console.log('Mensaje recibido en el endpoint HTTP:', req.body);
-  
-  res.json({ status: 'Mensaje recibido' });
-});
-
 wss.on('connection', (ws) => {
-  console.log('Cliente WebSocket conectado');
 
-  ws.on('message', (message) => {
-    console.log('Mensaje recibido:', message.toString());
-    
-    ws.send('Mensaje recibido');
-
+  ws.on('message', (coord) => {
+    console.log(coord.toString())
+    ws.send(JSON.stringify(coord.toString()));
   });
 
   ws.on('close', () => {
@@ -36,6 +23,6 @@ wss.on('connection', (ws) => {
   });
 });
 
-server.listen(8080, () => {
-  console.log('Servidor WebSocket y HTTP en funcionamiento en http://localhost:8080');
+server.listen(3000, () => {
+  console.log('Server Listening');
 });
